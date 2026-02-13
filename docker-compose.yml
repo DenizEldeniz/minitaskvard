@@ -6,7 +6,7 @@ services:
       - "1433:1433"
     environment:
       - ACCEPT_EULA=Y
-      - MSSQL_SA_PASSWORD=YourStrong!Passw0rd
+      - MSSQL_SA_PASSWORD=${SA_PASSWORD:-YOUR_STRONG_PASSWORD_HERE} # Set via .env or CLI
     volumes:
       - mssql_data:/var/opt/mssql
 
