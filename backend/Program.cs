@@ -8,10 +8,14 @@ using DotNetEnv;
 
 
 // Load .env file from root (backend is in subfolder, so look up one level)
-Env.Load("../.env");
+// Safe check for Docker environments where .env is injected via compose, not a file
+if (System.IO.File.Exists("../.env"))
+{
+    Env.Load("../.env");
+}
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Configuration.AddEnvironmentVariables(); // Ensure env vars are added
+builder.Configuration.AddEnvironmentVariables(); // Ensure env vars are picked up after DotNetEnv load
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 var saPassword = Environment.GetEnvironmentVariable("SA_PASSWORD");

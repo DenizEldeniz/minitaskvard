@@ -1,6 +1,6 @@
 # VardSec Mini Task
 
-Bu proje, React Frontend ve .NET Backend kullanan, Docker ile konteynerize edilmiş bir full-stack web uygulamasıdır.
+Bu proje, React Frontend ve .NET Backend kullanan, Docker ile konteynerize edilmiş bir full-stack web uygulamasıdır. (Backend: .NET 10.0)
 
 ## 🚀 Projeyi Çalıştırma (Tek Komutla)
 
@@ -16,7 +16,7 @@ docker-compose up --build
 
 Bu komut:
 *   SQL Server
-*   Backend API (.NET 9)
+*   Backend API (.NET 10)
 *   Frontend (React + Vite + Nginx)
 
 servislerini sırasıyla ayağa kaldıracaktır.
