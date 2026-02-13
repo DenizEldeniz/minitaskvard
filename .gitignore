@@ -1,0 +1,82 @@
+# =========================
+# OPERATING SYSTEM FILES
+# =========================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# =========================
+# IDE & TOOLS
+# =========================
+.vs/
+.vscode/
+.idea/
+*.user
+*.userosscache
+*.sln.docstates
+*.suo
+*.pidb
+*.swp
+*.bak
+
+# =========================
+# BACKEND (.NET Core)
+# =========================
+## Build results
+[Bb]in/
+[Oo]bj/
+**/bin/
+**/obj/
+
+## User-specific files
+*.user
+*.userprefs
+*.lock.json
+_ReSharper*/
+
+## Database (SQLite local)
+*.db
+*.db-shm
+*.db-wal
+
+## Logs & Temp
+*.log
+[Ll]ogs/
+
+## Environment Variables
+# WARNING: Do not commit secrets!
+backend/appsettings.Local.json
+backend/appsettings.Development.json # Usually contains secrets in dev
+
+# =========================
+# FRONTEND (Node.js / React)
+# =========================
+## Dependencies
+node_modules/
+frontend/node_modules/
+
+## Build
+dist/
+build/
+frontend/dist/
+frontend/build/
+
+## Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+## Environment Variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+frontend/.env
+frontend/.env.local
+
+# =========================
+# MISC
+# =========================
+coverage/
+.nyc_output/
