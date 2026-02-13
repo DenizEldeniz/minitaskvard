@@ -5,6 +5,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using backend.Data;
 using backend.Dtos;
 using backend.Models;
@@ -87,12 +88,52 @@ public class AuthController : ControllerBase
 
         var token = GenerateJwtToken(user);
 
+        var cookieOptions = new CookieOptions
+        {
+            HttpOnly = true,
+            Secure = false, 
+            SameSite = SameSiteMode.Lax, 
+            Expires = DateTime.UtcNow.AddHours(1)
+        };
+
+        Response.Cookies.Append("X-Access-Token", token, cookieOptions);
+
         return Ok(new
         {
             message = "Giriş başarılı!",
-            token,
             username = user.Username
         });
+    }
+
+    [Authorize]
+    [HttpGet("me")]
+    public async Task<IActionResult> Me()
+    {
+        var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (string.IsNullOrEmpty(userIdString) || !int.TryParse(userIdString, out int userId))
+        {
+            return Unauthorized();
+        }
+
+        var user = await _context.Users.FindAsync(userId);
+        if (user == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(new
+        {
+            id = user.Id,
+            username = user.Username,
+            email = user.Email
+        });
+    }
+
+    [HttpPost("logout")]
+    public IActionResult Logout()
+    {
+        Response.Cookies.Delete("X-Access-Token");
+        return Ok(new { message = "Çıkış başarılı." });
     }
 
     private string GenerateJwtToken(User user)

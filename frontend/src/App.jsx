@@ -5,40 +5,43 @@ import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import './index.css';
 
-function parseJwt(token) {
-    try {
-        const base64Url = token.split('.')[1];
-        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-        const jsonPayload = decodeURIComponent(
-            atob(base64).split('').map(c =>
-                '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
-            ).join('')
-        );
-        return JSON.parse(jsonPayload);
-    } catch {
-        return null;
-    }
-}
-
 function ProtectedRoute({ children }) {
-    const token = localStorage.getItem('token');
+    const [isAuthenticated, setIsAuthenticated] = React.useState(null);
+    const [loading, setLoading] = React.useState(true);
 
-    if (!token) {
-        return <Navigate to="/login" replace />;
+    React.useEffect(() => {
+        const checkAuth = async () => {
+            try {
+                const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/me`, {
+                    credentials: 'include'
+                });
+
+                if (response.ok) {
+                    setIsAuthenticated(true);
+                } else {
+                    setIsAuthenticated(false);
+                    localStorage.removeItem('username');
+                }
+            } catch (err) {
+                setIsAuthenticated(false);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        checkAuth();
+    }, []);
+
+    if (loading) {
+        return (
+            <div className="loading-screen">
+                <div className="spinner"></div>
+                <p>Oturum doğrulanıyor...</p>
+            </div>
+        );
     }
 
-    const decoded = parseJwt(token);
-
-    if (!decoded) {
-        localStorage.removeItem('token');
-        localStorage.removeItem('username');
-        return <Navigate to="/login" replace />;
-    }
-
-    const now = Date.now() / 1000;
-    if (decoded.exp && decoded.exp < now) {
-        localStorage.removeItem('token');
-        localStorage.removeItem('username');
+    if (!isAuthenticated) {
         return <Navigate to="/login" replace />;
     }
 

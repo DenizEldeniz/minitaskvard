@@ -19,6 +19,7 @@ function Login() {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, password }),
+                credentials: 'include',
             });
 
             const data = await response.json();
@@ -29,7 +30,6 @@ function Login() {
                 return;
             }
 
-            localStorage.setItem('token', data.token);
             localStorage.setItem('username', data.username);
             navigate('/dashboard');
         } catch (err) {

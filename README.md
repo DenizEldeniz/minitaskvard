@@ -47,6 +47,6 @@ Jwt__Key=CokGizliVeUzunBirAnahtar32KarakterOlmali_123
 ## 🛠️ Teknolojiler
 
 *   **Frontend**: React, Vite, Nginx
-*   **Backend**: .NET 9, Entity Framework Core
+*   **Backend**: .NET 10.0, Entity Framework Core
 *   **Veritabanı**: Microsoft SQL Server
 *   **Altyapı**: Docker & Docker Compose
