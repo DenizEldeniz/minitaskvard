@@ -4,12 +4,27 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using FluentValidation;
 using backend.Data;
+using DotNetEnv;
+
+
+// Load .env file from root (backend is in subfolder, so look up one level)
+Env.Load("../.env");
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Configuration.AddEnvironmentVariables(); // Ensure env vars are added
 
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+var saPassword = Environment.GetEnvironmentVariable("SA_PASSWORD");
+
+if (!string.IsNullOrEmpty(saPassword) && !string.IsNullOrEmpty(connectionString))
+{
+    var csBuilder = new Microsoft.Data.SqlClient.SqlConnectionStringBuilder(connectionString);
+    csBuilder.Password = saPassword;
+    connectionString = csBuilder.ToString();
+}
 
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(connectionString));
 
 builder.Services.AddControllers();
 builder.Services.AddValidatorsFromAssemblyContaining<Program>();
