@@ -6,7 +6,7 @@ services:
       - "1433:1433"
     environment:
       - ACCEPT_EULA=Y
-      - MSSQL_SA_PASSWORD=${SA_PASSWORD:-QEIRQWGE2198hhsad18UYRVQWE123612najehq218gsagdg7u1231hyw7}
+      - MSSQL_SA_PASSWORD=${SA_PASSWORD}
       - mssql_data:/var/opt/mssql
 
   backend:
@@ -17,8 +17,8 @@ services:
     ports:
       - "5129:8080"
     environment:
-      - ConnectionStrings__DefaultConnection=Server=vard-mini-task;Database=VardSecDb;User Id=sa;Password=${SA_PASSWORD:-QEIRQWGE2198hhsad18UYRVQWE123612najehq218gsagdg7u1231hyw7};TrustServerCertificate=True
-      - Jwt__Key=PWQEUQ3241dafkllkyumy2980WOVEUQWNasdfdsfHDUJMKVMOcvnvmxfhOIVQW12312NYAOVUY374N2342
+      - ConnectionStrings__DefaultConnection=Server=vard-mini-task;Database=VardSecDb;User Id=sa;Password=${SA_PASSWORD};TrustServerCertificate=True
+      - Jwt__Key=${Jwt__Key}
       - Jwt__Issuer=VardSecApp
       - Jwt__Audience=VardSecUsers
     depends_on:
